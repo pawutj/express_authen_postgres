@@ -3,7 +3,8 @@ const router = express.Router();
 const db = require("../db");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-
+const swaggerUi = require("swagger-ui-express");
+const YAML = require("yamljs");
 const SECRET = "NEVER EVER MAKE THIS PUBLIC!";
 
 router.get("/", async (req, res, next) => {

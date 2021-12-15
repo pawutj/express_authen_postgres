@@ -5,11 +5,56 @@ info:
 tags:
   - name: user
 paths:
-  /user:
+  /users:
     get:
+      tags:
+        - user
       responses:
         "200":
           description: OK
+
+  /users/login:
+    post:
+      tags:
+        - user
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        "200":
+          description: OK
+  /users/secret:
+    get:
+      # parameters:
+      #   - in: header
+      #     name: Authorization
+      #     schema:
+      #       type: string
+      security:
+        - ApiKeyAuth: []
+
+      tags:
+        - user
+      responses:
+        "200":
+          description: OK
+components:
+  securitySchemes:
+    # BearerAuth:
+    #   type: http
+    #   scheme: bearer
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+
   # /param:
   #   get:
   #     parameters:

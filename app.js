@@ -4,9 +4,13 @@ const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const usersRoutes = require("./routes/users");
 
+const swaggerUi = require("swagger-ui-express");
+const YAML = require("yamljs");
+const swaggerDocument = YAML.load("./swagger.yml");
+
 app.use(morgan("tiny"));
 app.use(bodyParser.urlencoded({ extended: false }));
-
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 // parse application/json
 app.use(bodyParser.json());
 app.use("/users", usersRoutes);
