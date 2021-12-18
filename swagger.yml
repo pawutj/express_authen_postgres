@@ -32,11 +32,6 @@ paths:
           description: OK
   /users/secret:
     get:
-      # parameters:
-      #   - in: header
-      #     name: Authorization
-      #     schema:
-      #       type: string
       security:
         - ApiKeyAuth: []
 
@@ -45,6 +40,16 @@ paths:
       responses:
         "200":
           description: OK
+  /users/secret2:
+    get:
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - user
+      responses:
+        "200":
+          description: OK
+
 components:
   securitySchemes:
     # BearerAuth:

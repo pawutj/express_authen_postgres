@@ -7,6 +7,11 @@ const swaggerUi = require("swagger-ui-express");
 const YAML = require("yamljs");
 const SECRET = "NEVER EVER MAKE THIS PUBLIC!";
 
+const ExtractJwt = require("passport-jwt").ExtractJwt;
+const JwtStrategy = require("passport-jwt").Strategy;
+
+const passport = require("passport");
+
 router.get("/", async (req, res, next) => {
   try {
     const result = await db.query("SELECT * FROM users");
@@ -78,6 +83,29 @@ function ensureLoggedIn(req, res, next) {
 }
 
 router.get("/secret", ensureLoggedIn, async function (req, res, next) {
+  try {
+    return res.json({ message: "You made it!" });
+  } catch (err) {
+    return res.json(err);
+  }
+});
+
+const jwtOptions = {
+  jwtFromRequest: ExtractJwt.fromHeader("authorization"),
+  secretOrKey: SECRET, //SECRETเดียวกับตอนencodeในกรณีนี้คือ MY_SECRET_KEY
+};
+
+const jwtAuth = new JwtStrategy(jwtOptions, (payload, done) => {
+  // if (payload.sub === "kennaruk") done(null, true);
+  // else done(null, false);
+  console.log(payload);
+  done(null, true);
+});
+
+passport.use(jwtAuth);
+const requireJWTAuth = passport.authenticate("jwt", { session: false });
+
+router.get("/secret2", requireJWTAuth, async function (req, res, next) {
   try {
     return res.json({ message: "You made it!" });
   } catch (err) {
